@@ -1,28 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <HelloWorld />
+    <!-- listens for add-to-cart method -->
+    <app-product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart" />
+    <div class="cart">
+      <p>Cart {{ cart }}</p>
+      <p>Cart {{ cart.length }}</p>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import HelloWorld from '@/components/HelloWorld.vue'
+import appProduct from '@/components/appProduct.vue'
+import { constants } from 'crypto'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld
+    HelloWorld,
+    appProduct
+  },
+  data() {
+    return {
+      premium: true,
+      cart: []
+    }
+  },
+  methods: {
+    updateCart(id) {
+      // receive variantId
+      this.cart.push(id)
+      //this.variants[this.selectedVariant].variantQuantity -= 1
+    },
+    removeFromCart(id) { // removes all items that match id from cart array
+      for (var i = this.cart.length - 1; i >= 0; i--) {
+        if (this.cart[i] === id) {
+          this.cart.splice(i, 1) // at index position i, remove 1 item
+        }
+      }
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+// @import 'src/assets/style.scss'; **import to this component only**
 </style>
