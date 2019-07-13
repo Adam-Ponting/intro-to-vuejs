@@ -4,8 +4,9 @@
       v-for="(tab, index) in tabs"
       :key="index"
       @click="selectedTab = tab"
-      :class="{activeTab:selectedTab === tab}"
-    >{{ tab }}</span>
+      :class="{ activeTab: selectedTab === tab }"
+      >{{ tab }}</span
+    >
 
     <div v-show="selectedTab === 'Reviews'">
       <h2>Reviews</h2>
@@ -45,5 +46,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

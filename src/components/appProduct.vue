@@ -9,11 +9,18 @@
       <p v-if="inStock">in stock</p>
       <p v-else>out of stock</p>
       <p>{{ sale }}</p>
-      <p>Shipping: {{ shipping }}</p>
+      <span
+        class="tab"
+        :class="{ activeTab: selectedTab === tab }"
+        v-for="(tab, index) in tabs"
+        :key="index"
+        @click="selectedTab = tab"
+      >{{ tab }}</span>
+      <p v-show="selectedTab === 'Shipping'">Shipping: {{ shipping }}</p>
       <p>User is premium: {{ premium }}</p>
 
       <!-- prop examples, data passed down -->
-      <app-product-details :details="details" />
+      <app-product-details :details="details" v-show="selectedTab === 'Details'" />
       <app-product-sizes :sizes="sizes" />
 
       <div
@@ -95,7 +102,9 @@ export default {
         }
       ],
       sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-      reviews: []
+      reviews: [],
+      tabs: ['Details', 'Shipping'],
+      selectedTab: 'Details'
     }
   },
   methods: {
