@@ -1,12 +1,13 @@
 <template>
   <div>
     <form class="review-form" @submit.prevent="onSubmit">
-      <p class="error" v-if="errors.length"></p>
-
-      <b>Please correct the following error(s):</b>
-      <ul>
-        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-      </ul>
+      <div v-if="errors.length">
+        <p class="error"></p>
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+        </ul>
+      </div>
 
       <p>
         <label for="name">Name:</label>
@@ -48,6 +49,8 @@
 </template>
 
 <script>
+import { EventBus } from '../event-bus.js'
+
 export default {
   data() {
     return {
@@ -68,9 +71,10 @@ export default {
           rating: this.rating,
           recommend: this.recommend
         }
-        this.$emit('review-submitted', productReview) // send review-submitted event with productReview as payload
+        /* this.$emit('review-submitted', productReview) // send review-submitted event with productReview as payload to parent */
+        EventBus.$emit('review-submitted', productReview) // send review-submitted event with productReview as payload as communicaing to grandparent
         // resets values
-        this.name = null 
+        this.name = null
         this.review = null
         this.rating = null
         this.recommend = null
@@ -85,5 +89,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

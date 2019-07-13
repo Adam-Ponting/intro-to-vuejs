@@ -47,32 +47,22 @@
       -->
       <button @click="removeFromCart">Remove from cart</button>
     </div>
-    <div>
-      <h2>Reviews</h2>
-      <p v-if="!reviews.length"> There are no reviews yet.</p>
-      <ul>
-        <li v-for="(review,index) in reviews" :key="index">
-          <p>{{ review.name }}</p>
-          <p>{{ review.rating }}</p>
-          <p>{{ review.review }}</p>
-          <p>{{ review.recommend }}</p>
-        </li>
-      </ul>
-    </div>
 
-    <app-product-review @review-submitted="addReview" />
+    <app-product-tabs :reviews="reviews" />
   </div>
 </template>
 
 <script>
+import { EventBus } from '../event-bus.js'
 import appProductDetails from '@/components/appProductDetails.vue'
 import appProductSizes from '@/components/appProductSizes.vue'
-import appProductReview from '@/components/appProductReview.vue'
+import appProductTabs from '@/components/appProductTabs.vue'
+
 export default {
   components: {
     appProductDetails,
     appProductSizes,
-    appProductReview
+    appProductTabs
   },
   props: {
     premium: {
@@ -120,10 +110,11 @@ export default {
     },
     updateProduct(index) {
       this.selectedVariant = index // set to 0 or 1
-    },
-    addReview(productReview) {
+    }
+    /*     addReview(productReview) {
       this.reviews.push(productReview)
     }
+ */
   },
   computed: {
     /*     classObject() {
@@ -154,10 +145,13 @@ export default {
         return '£2.99'
       }
     }
+  },
+  mounted() {
+    EventBus.$on('review-submitted', productReview => {
+      this.reviews.push(productReview)
+    })
   }
 }
 </script>
 
-
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
